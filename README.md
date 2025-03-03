@@ -17,14 +17,14 @@ As we mentioned earlier, the main data structure is an octree, and a list of chu
 ### Mesh generation
 To generate mesh for the octree, the only nodes that we must consider or look at is the leaf nodes. Instead of doing a recursive approach we did an iterative approach using Queue. When the queue has all the leaf nodes (their state is solid) it start generating triangles for the voxels that must be rendered. I rendered only the visible faces of the voxels. For each voxel, I checked it's neighbour, if one of his neighbour is solid, we dont render that face which with it a boundry, if the neighbour is Air then we render this face and etc. For each chunk we save for each position, the triangles that must be rendered.
 
-### Features
+## Features
 
-#### Build
+### Build
 - When building a block in a chunk, we dont need to create new nodes, the node is already created, we only need to traverse on the path which lead us to it. Then, we change the node type to Solid, then we calculate the triangles that needed to be generated, we must notice that if we are adding the block on the top of another block, we must remove the top face of the bottom block, the same for other direction, (the other six neighbours). And then we generate the triangles of the block that we want to add. <br />This approach effienctlly add and remove triangles, without the need to generate the triangles of all the chunk once again. <br />
 
 - We added a UI for the player, which he can decide how many blocks he want to build/place in the chunk. I designed a way which he can choose how many block he want to add across multiple axis, X,Y,Z and then use the The build function to place those block in the world. Sometimes, adding multiple block at the same time can happen on multiple neighbouring chunks. In that case, we check the chunk position of each node we place if it variey from the current chunk we will call the place function from the other chunk and update the octree and triangles like we discussed before.
 
-#### Remove Block
+### Remove Block
 
 - When removing blocks, we must take care of similar cases like when we placed blocks, when we delete a block, we must adjust the neighbouring blocks as well. <br /> If the broken block is on the left of other block, we must render the left face of the neighboring block. The same when it on top of some block, then we must render the top face of the bottom block.
 
@@ -33,7 +33,7 @@ If the player pressed 2 the size of breaking a block will be 0.5, and he can rem
 
 
 
-### How To Play
+## How To Play
 
 - Movment of player:
     1. W - UP
@@ -50,7 +50,7 @@ To switch between block types, you can enter the number at the right of each typ
 To Break blocks of muliples level, you can use 1,2,3,4,5. as the number gets higher the level gets deeper/lower.
 
 
-### Future Work
+## Future Work
 
 Instead of using regular Octrees, we can use Sparse Voxel Octree, i already have a demo which partially working. This specfic type of structure is really effiecent and Memory freindly. To maintain a such data structure, I need to design much complex algorithms for mesh generation. One bigger advantage of using this DS is it reduces memory which is needed to build each chunk, becasue this DS splits nodes when it is needed to split. Fo example for a large area which is all solid instead of represnting it using multiple nodes we can represent it with one big solid node. <br /> Disadvantage is that searching for a block take at most O(logn) while if we used Grid it will take only O(1). But using grid will need larger memory.
 
