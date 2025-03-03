@@ -1,5 +1,5 @@
 # Octree Game
-
+Before staring, I want to mention that **this project was done under the supervision of Prof. Roi Poranne, as part of the requirements for a BSc in computer science at the University of Haifa**
 
 ![INTRO-IMAGE](images/INTRO-IMAGE.png)
 ## Introduction
