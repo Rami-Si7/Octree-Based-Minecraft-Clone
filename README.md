@@ -8,6 +8,9 @@ Key features:
 - Infinite terrain generation.
 - Place block/ place multiple blocks at once.
 - Break block/ break and spliting blocks on different levels.
+<br />
+
+Feel free to check the [playlist](https://www.youtube.com/watch?v=Swm-AQIH1bw&list=PLrF1CJnnYlq_D1w6doglLAetkI2DD9JLo) on my Youtube channel
 
 ## Structure
 ### Creation
