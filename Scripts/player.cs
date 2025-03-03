@@ -116,22 +116,28 @@ public partial class player : CharacterBody3D
 		if(Input.IsActionJustPressed("Wood"))
 		{
 			voxelTexture = HandleVoxelType(1);
+			Global.level = 1f;
 		}
 		if(Input.IsActionJustPressed("Brick"))
 		{
 			voxelTexture = HandleVoxelType(2);
+			Global.level = 0.5f;
 		}
 		if(Input.IsActionJustPressed("Dirt"))
 		{
 			voxelTexture = HandleVoxelType(3);
+			Global.level = 0.25f;
+
 		}
 		if(Input.IsActionJustPressed("Grass"))
 		{
 			voxelTexture = HandleVoxelType(4);
+			Global.level = 0.125f;
 		}
 		if(Input.IsActionJustPressed("RedBrick"))
 		{
 			voxelTexture = HandleVoxelType(5);
+			Global.level = 0.0625f;
 		}
 		if(Input.IsActionJustPressed("BuildingWood"))
 		{

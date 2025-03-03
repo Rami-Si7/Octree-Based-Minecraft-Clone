@@ -427,6 +427,13 @@ private void ClearVoxels(Octree octree)
 
 	public void RemoveAndSplitBlock(Vector3 raycastPosition, Vector3 normal, Octree voxel)
 	{
+		if(voxel.size == Global.level)
+		{
+			voxel.voxelType = VoxelType.Air;
+			chunkInstance.chunkTriangles[voxel.position].Clear();
+			HandleFacesOfDeletedBlcok(voxel);
+			return;
+		}
 		voxel.Divide(voxel.size/2, (Vector3I)chunkInstance.Position);
 		Octree temp = null;
 		foreach(Octree c in voxel.children)
@@ -765,9 +772,9 @@ private void ClearVoxels(Octree octree)
 		}
 		return res;
 	}
-		public Octree FindLeafAtPosition_2(Vector3 position, Vector3 normal)
+		public Octree FindLeafAtPosition_2(Vector3 position, Vector3 normal, float level)
 	{
-		if(children == null)
+		if(children == null || level == size)
 		{
 			return this;
 		}
@@ -794,7 +801,7 @@ private void ClearVoxels(Octree octree)
 			if(c.Contains(s, c.size))
 			{
 				// GD.Print("in HERE");
-				return c.FindLeafAtPosition_2(position,normal);
+				return c.FindLeafAtPosition_2(position,normal, level);
 			}
 		}
 	   return null;

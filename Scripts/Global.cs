@@ -7,6 +7,8 @@
         public static float maxHeight = 0.25f;
         public static bool octreeBreak = false;
 
+		public static float level = 1f;
+
 		public static float GetCaveNoise(int x, int y, int z, float frequency)
 		{
 			noise.SetNoiseType(FastNoiseLite.NoiseTypeEnum.Simplex); // Use OpenSimplex for smooth caves

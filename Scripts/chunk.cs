@@ -221,7 +221,7 @@ private Octree GetVoxelPosition(Vector3 hitPosition, Vector3 normal)
 	if (normal.Z > 0) hitPosition.Z = GetReminder(hitPosition.Z); // Hit Back Face
 	
 	Octree c = octree.FindNeighboursAtSameLevel(hitPosition, 1);
-	Octree found = c.FindLeafAtPosition_2(voxelPos, normal);
+	Octree found = c.FindLeafAtPosition_2(voxelPos, normal, Global.level);
 	if(found != null && found.size < 0.0625)
 	{
 		return null;
@@ -248,26 +248,32 @@ public void BreakBlock(Vector3 rayCastPosition, Vector3 rayCastNormal)
 	}
 	else
 	{
-		Vector3I newPosition = new Vector3I(Mathf.FloorToInt(rayCastPosition.X), Mathf.FloorToInt(rayCastPosition.Y), Mathf.FloorToInt(rayCastPosition.Z));
-		if (rayCastNormal.X > 0)
-		{
-			newPosition.X = (int)(rayCastPosition.X - Mathf.FloorToInt(rayCastPosition.X) == 0 ? rayCastPosition.X - 1: Mathf.FloorToInt(rayCastPosition.X));
-		}
+		// Vector3I newPosition = new Vector3I(Mathf.FloorToInt(rayCastPosition.X), Mathf.FloorToInt(rayCastPosition.Y), Mathf.FloorToInt(rayCastPosition.Z));
+		// if (rayCastNormal.X > 0)
+		// {
+		// 	newPosition.X = (int)(rayCastPosition.X - Mathf.FloorToInt(rayCastPosition.X) == 0 ? rayCastPosition.X - 1: Mathf.FloorToInt(rayCastPosition.X));
+		// }
 
-		if (rayCastNormal.Y > 0)		
-		{
-			newPosition.Y = (int)(rayCastPosition.Y - Mathf.FloorToInt(rayCastPosition.Y) == 0 ? rayCastPosition.Y - 1: Mathf.FloorToInt(rayCastPosition.Y));
-		}
-		if (rayCastNormal.Z > 0)
-		{
-			newPosition.Z = (int)(rayCastPosition.Z - Mathf.FloorToInt(rayCastPosition.Z) == 0 ? rayCastPosition.Z - 1: Mathf.FloorToInt(rayCastPosition.Z));
-		}
-
+		// if (rayCastNormal.Y > 0)		
+		// {
+		// 	newPosition.Y = (int)(rayCastPosition.Y - Mathf.FloorToInt(rayCastPosition.Y) == 0 ? rayCastPosition.Y - 1: Mathf.FloorToInt(rayCastPosition.Y));
+		// }
+		// if (rayCastNormal.Z > 0)
+		// {
+		// 	newPosition.Z = (int)(rayCastPosition.Z - Mathf.FloorToInt(rayCastPosition.Z) == 0 ? rayCastPosition.Z - 1: Mathf.FloorToInt(rayCastPosition.Z));
+		// }
+		Vector3I newPosition =  (Vector3I)GetVoxelPosition(rayCastPosition, rayCastNormal).position;
 		octree.RemoveBlock(newPosition);
 	}
 
 	RefreshChunk();
 }
+
+public void Breakk(Vector3 rayCastPosition, Vector3 rayCastNormal)
+{
+	
+
+}	
 public void PlaceBlock(Vector3 position, Vector3 normal, VoxelTexture voxelTexture, int xScale, int yScale, int zScale)
 {
 	int startZ = 0, endZ = 0, startX = 0, endX = 0, startY = 0, endY = 0;
