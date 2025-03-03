@@ -1,0 +1,9 @@
+.import/
+.godot/
+.mono/
+.vs/
+.idea/
+*.tmp
+*.log
+export_presets.cfg
+*.mono

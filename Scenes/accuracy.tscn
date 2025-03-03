@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://crtby2bcmx8sg"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_nmohc"]
+size = Vector3(1, 0.1, 0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_enfr0"]
+size = Vector3(1, 0.1, 1)
+
+[node name="Accuracy" type="Node2D"]
+scale = Vector2(100, 100)
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+scale = Vector2(10, 10)
+mesh = SubResource("BoxMesh_nmohc")
+
+[node name="MeshInstance2D2" type="MeshInstance2D" parent="."]
+rotation = -1.55509
+scale = Vector2(10, 10)
+mesh = SubResource("BoxMesh_enfr0")

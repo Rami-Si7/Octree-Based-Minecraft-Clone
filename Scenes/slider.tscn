@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://choid358jmtd5"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_right = 250.0
+offset_bottom = 77.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "X Axis: "
+
+[node name="X" type="HSlider" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+min_value = 1.0
+max_value = 10.0
+value = 1.0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Y Axis: "
+
+[node name="Y" type="HSlider" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+min_value = 1.0
+max_value = 10.0
+value = 1.0
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "Z Axis: 
+"
+
+[node name="Z" type="HSlider" parent="VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+min_value = 1.0
+max_value = 10.0
+value = 1.0

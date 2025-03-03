@@ -1,0 +1,144 @@
+[gd_scene load_steps=15 format=3 uid="uid://ckj6vq6ip3vcn"]
+
+[ext_resource type="Script" path="res://Scripts/player.cs" id="1_k7ktn"]
+[ext_resource type="PackedScene" uid="uid://crtby2bcmx8sg" path="res://Scenes/accuracy.tscn" id="2_ml1dp"]
+[ext_resource type="PackedScene" uid="uid://de3djjr841d1g" path="res://resources/minecraft_diamond_axe.glb" id="3_cefvp"]
+[ext_resource type="AudioStream" uid="uid://dqv3kmdsufyxh" path="res://Audio/jump_2.wav" id="4_tyms0"]
+[ext_resource type="AudioStream" uid="uid://1ncc2vsnhr85" path="res://Audio/build.wav" id="5_0ufyu"]
+[ext_resource type="AudioStream" uid="uid://cdeexvbgjfqu8" path="res://Audio/break.wav" id="6_0d8f8"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_f5o5h"]
+radius = 0.56
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_lmu5l"]
+radius = 0.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aqb54"]
+transparency = 1
+albedo_color = Color(1, 0.415686, 0.835294, 0.364706)
+
+[sub_resource type="BoxMesh" id="BoxMesh_5k8vg"]
+material = SubResource("StandardMaterial3D_aqb54")
+size = Vector3(1.01, 1.01, 1.01)
+
+[sub_resource type="Animation" id="Animation_xc2n7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.388, 0.0476489, -0.389)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.250398, 0.174533, 1.5865)]
+}
+
+[sub_resource type="Animation" id="Animation_8wcdb"]
+resource_name = "Swing"
+length = 0.14
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(-0.0333333, 0.0333333, 0.133333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0.388, 0.0476489, -0.389), Vector3(0.388, 0.02, -0.389), Vector3(0.388, 0.051105, -0.389)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(-0.0333333, 0.0333333, 0.133333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(-0.250398, 0.174533, 1.5865), Vector3(-1.16239, 0.174533, 1.5865), Vector3(0.572468, 0.174533, 1.5865)]
+}
+
+[sub_resource type="Animation" id="Animation_34ku3"]
+resource_name = "blank"
+loop_mode = 1
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_04usy"]
+_data = {
+"RESET": SubResource("Animation_xc2n7"),
+"Swing": SubResource("Animation_8wcdb"),
+"blank": SubResource("Animation_34ku3")
+}
+
+[node name="CharacterBody3D" type="CharacterBody3D" node_paths=PackedStringArray("rayCast3D", "camera3D", "highlight", "_axe", "_axeAnimation", "jumpAudio", "buildAudio", "breakAudio", "accuracy")]
+script = ExtResource("1_k7ktn")
+rayCast3D = NodePath("Camera3D/RayCast3D")
+camera3D = NodePath("Camera3D")
+highlight = NodePath("highlight")
+_axe = NodePath("Sketchfab_Scene")
+_axeAnimation = NodePath("Sketchfab_Scene/AnimationPlayer")
+jumpAudio = NodePath("Jump")
+buildAudio = NodePath("Build")
+breakAudio = NodePath("Break")
+accuracy = NodePath("Accuracy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_f5o5h")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_lmu5l")
+
+[node name="Accuracy" parent="." instance=ExtResource("2_ml1dp")]
+position = Vector2(100, 0)
+scale = Vector2(2, 2)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.205015, 0)
+current = true
+
+[node name="RayCast3D" type="RayCast3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0678879, 0)
+target_position = Vector3(0, 0, -10)
+
+[node name="highlight" type="MeshInstance3D" parent="."]
+visible = false
+mesh = SubResource("BoxMesh_5k8vg")
+
+[node name="Sketchfab_Scene" parent="." instance=ExtResource("3_cefvp")]
+transform = Transform3D(-0.00349622, -0.0196437, 0.00137928, 0.00794195, -0.000124729, 0.0183551, -0.0180194, 0.00375639, 0.00782227, 0.388, 0.02, -0.389)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sketchfab_Scene"]
+reset_on_save = false
+libraries = {
+"": SubResource("AnimationLibrary_04usy")
+}
+autoplay = "blank"
+speed_scale = 0.9
+
+[node name="Jump" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("4_tyms0")
+
+[node name="Build" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("5_0ufyu")
+
+[node name="Break" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("6_0d8f8")
+
+[connection signal="animation_finished" from="Sketchfab_Scene/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
