@@ -1,5 +1,7 @@
 # Octree Game
 
+
+![INTRO-IMAGE](images/INTRO-IMAGE.png)
 ## Introduction
 In this project I created a Minecraft clone game. But with few modifications. Before addressing these modifications, I will explain how the world is created.<br /><br />
 Key features:
@@ -22,14 +24,16 @@ To generate mesh for the octree, the only nodes that we must consider or look at
 ### Build
 - When building a block in a chunk, we dont need to create new nodes, the node is already created, we only need to traverse on the path which lead us to it. Then, we change the node type to Solid, then we calculate the triangles that needed to be generated, we must notice that if we are adding the block on the top of another block, we must remove the top face of the bottom block, the same for other direction, (the other six neighbours). And then we generate the triangles of the block that we want to add. <br />This approach effienctlly add and remove triangles, without the need to generate the triangles of all the chunk once again. <br />
 
-- We added a UI for the player, which he can decide how many blocks he want to build/place in the chunk. I designed a way which he can choose how many block he want to add across multiple axis, X,Y,Z and then use the The build function to place those block in the world. Sometimes, adding multiple block at the same time can happen on multiple neighbouring chunks. In that case, we check the chunk position of each node we place if it variey from the current chunk we will call the place function from the other chunk and update the octree and triangles like we discussed before.
+- We added a UI for the player, which he can decide how many blocks he want to build/place in the chunk. I designed a way which he can choose how many block he want to add across multiple axis, X,Y,Z and then use the The build function to place those block in the world. Sometimes, adding multiple block at the same time can happen on multiple neighbouring chunks. In that case, we check the chunk position of each node we place if it variey from the current chunk we will call the place function from the other chunk and update the octree and triangles like we discussed before.<br />
+![Build](images/BUILD-UI.png)
 
 ### Remove Block
 
 - When removing blocks, we must take care of similar cases like when we placed blocks, when we delete a block, we must adjust the neighbouring blocks as well. <br /> If the broken block is on the left of other block, we must render the left face of the neighboring block. The same when it on top of some block, then we must render the top face of the bottom block.
 
 - When using removing and spliting feature. The node is divided to 8 children, the octant at the hit position will be Air, the others will be solid. Now we generate the triangles of new octant as the same way we did before. But there is a problem, what if we broke now other octant at lowest level, it will also be divided to 8 octants and 7 children will only be rendered. But what abut the boundry and it's neighbour at a higher level. in the case the face of the neighbour will not be rendered. So, we must take care of this case. I achieved that by checking if the neighbour size is bigger that the current node, if yes then i generate triangles of the face of the larger node. This approach can be applied also for every level in the octree. To make the removing and spliting block more interesting, I added as my supervisor recommended, a way to break multiple blocks at the same lower level of the octree.<br /> By pressing G in game, the player can change the mode for breaking and spliting, the default size is 1. <br />
-If the player pressed 2 the size of breaking a block will be 0.5, and he can remove multiple blocks of size 0.5, If he pressed 3 the size will be 0.25 and etc. till it reachs the size of 0.0625.
+If the player pressed 2 the size of breaking a block will be 0.5, and he can remove multiple blocks of size 0.5, If he pressed 3 the size will be 0.25 and etc. till it reachs the size of 0.0625.<br />
+![Break](images/BREAK-SPLIT.png)
 
 
 
