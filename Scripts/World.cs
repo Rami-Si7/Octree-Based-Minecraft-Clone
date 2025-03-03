@@ -28,7 +28,7 @@ public partial class World : Node
 	private int frameCounter = 0;
 	private ConcurrentQueue<Tuple<Octree, Vector3I>> chunkQueue = new ConcurrentQueue<Tuple<Octree, Vector3I>>();
 	private ConcurrentQueue<chunk> meshChunk = new ConcurrentQueue<chunk>();
- 	private Vector3I lastPlayerChunkCoordinates;
+ 	private Vector3I lastPlayerChunkCoordinates = new Vector3I(0,0,-1);
 	private int chunksMovedCount = 0;
 	public int chunkUpdateThreshold = 5; // Update every 5 chunks
 	private bool JustStarted = true;
@@ -144,6 +144,7 @@ private void GenerateChunkData(Vector3I chunkPosition, float lod)
 	octree.position = chunkPosition;
 	octree.size = chunkSize;
 	octree.desiredLODLevel = lod;
+
 	// bool[, ,] heightMap = PopulateHeightMap(chunkPosition);
 	// octree.BuildSparseVoxelOctree(lod, heightMap, chunkPosition);
 

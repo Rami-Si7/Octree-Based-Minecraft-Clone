@@ -76,8 +76,8 @@ public Dictionary<Vector3, List<(Vector3[], Face, VoxelTexture)>> chunkTriangles
 	}
 	Vector2[] GetFaceUVs(int tileX, int tileY, int tileSize, int atlasSize)
 	{
-		// Define a fixed UV region in the texture atlas (e.g., first tile in the atlas)
-		Rect2 uvRegion = GetTileRegion(tileX, tileY, tileSize, atlasSize); // (TileX=0, TileY=0), TileSize=16, AtlasSize=128
+		
+		Rect2 uvRegion = GetTileRegion(tileX, tileY, tileSize, atlasSize);
 
 		return new Vector2[]
 		{
@@ -111,30 +111,6 @@ public Dictionary<Vector3, List<(Vector3[], Face, VoxelTexture)>> chunkTriangles
 	{
 		this.chunkSize = chunkSize;
 	}
-	// public void UpdateChunk(Octree root)
-	// {
-	// 	GD.Print("start meshing giggty");
-	// 	surfaceTool.Begin(Mesh.PrimitiveType.Triangles);
-	// 	octree.AddMesh(surfaceTool, root);
-	// 	// octree.PrecomputeVisibility(root);
-	// 	GD.Print("START ADDDD meshing giggty");
-	// 	// octree.AddMeshOptimized(surfaceTool, root);
-	// 	GD.Print("END ADDDDD meshing giggty");
-	// 	surfaceTool.SetMaterial(new StandardMaterial3D()
-	// 	{
-	// 		VertexColorUseAsAlbedo = true, 
-	// 		AlbedoColor = Colors.DarkGreen,
-	// 		CullMode = BaseMaterial3D.CullModeEnum.Disabled 
-	// 	});
-
-	// 	var arrayMesh = surfaceTool.Commit();
-	// 	chunkMesh.Mesh = arrayMesh;
-	// 	collisionShape.Shape = arrayMesh.CreateTrimeshShape();
-	// 	CallDeferred("add_child",chunkMesh);
-
-	// 	GD.Print("end meshing giggty");
-
-	// }
 
 
 public void UpdateChunk(Octree root, int lod)
@@ -160,38 +136,6 @@ public void UpdateChunk(Octree root, int lod)
 		RefreshChunk();
 	}));
 }
-// public void RefreshChunk()
-// {
-// 	GD.Print("refreshing");
-// 	CleanChunkMesh();
-// 	// chunkMesh = new MeshInstance3D();
-// 	SurfaceTool surfaceTool = new SurfaceTool();
-// 	surfaceTool.Begin(Mesh.PrimitiveType.Triangles);
-
-// 	foreach(var p in chunkTriangles)
-// 	{
-// 		foreach (var triangle in p.Value)
-// 		{
-// 			// GD.Print("lol");
-// 			surfaceTool.AddTriangleFan(triangle);
-// 		}
-// 	}
-// 	surfaceTool.SetMaterial(new StandardMaterial3D()
-// 	{
-// 		VertexColorUseAsAlbedo = true,
-// 		AlbedoColor = Colors.DarkGreen,
-// 		CullMode = BaseMaterial3D.CullModeEnum.Disabled
-// 	});
-// 	var arrayMesh = surfaceTool.Commit();
-// 	if(arrayMesh == null)
-// 	{
-// 		GD.Print("mesh is null");
-// 	}
-// 	chunkMesh.Mesh = arrayMesh;
-// 	collisionShape.Shape = arrayMesh.CreateTrimeshShape();
-// 	CallDeferred("add_child", collisionShape);
-// 	CallDeferred("add_child",chunkMesh);
-// }
 
 public void RefreshChunk()
 {
@@ -232,35 +176,13 @@ public void RefreshChunk()
 
 private  void UpdateMeshAndCollision(Mesh arrayMesh)
 {
-	// await Task.Delay(50); // ✅ Ensures Godot processes frames before updating
-
-	// if (chunkMesh == null || collisionShape == null)
-	// {
-	// 	GD.PrintErr("🚨 chunkMesh or collisionShape is null!");
-	// 	return;
-	// }
-
-	// if (arrayMesh.GetSurfaceCount() == 0)
-	// {
-	// 	GD.PrintErr("🚨 arrayMesh has no valid geometry! Skipping collision update.");
-	// 	return;
-	// }
 
 	chunkMesh.Mesh = arrayMesh;
 
 	var collision = arrayMesh.CreateTrimeshShape();
-	// if (collision == null)
-	// {
-	// 	GD.PrintErr("🚨 Failed to create TrimeshShape!");
-	// 	return;
-	// }
-	// else
-	// {
-	// 	GD.Print("successssss");
-	// }
+
 
 	collisionShape.Shape = collision;
-	// GD.Print("✅ Collision shape successfully updated!");
 
 	if (!chunkMesh.IsInsideTree())
 	{
@@ -272,14 +194,6 @@ private  void UpdateMeshAndCollision(Mesh arrayMesh)
 		CallDeferred("add_child", collisionShape);
 	}
 }
-
-
-// public void BreakBlock(Vector3 breakPosition)
-// {
-// 	octree.RemoveAndSplitBlock(breakPosition);
-// 	RefreshChunk();
-// 	GD.Print("breakPosition: ", breakPosition);
-// }
 
 private float GetReminder(float cooridante)
 {
@@ -302,13 +216,10 @@ private Octree GetVoxelPosition(Vector3 hitPosition, Vector3 normal)
 		hitPosition.Z
 	);
 
-	// ✅ Adjust based on the normal direction
 	if (normal.X > 0) hitPosition.X = GetReminder(hitPosition.X); // Hit Left Face
-	// if (normal.X < 0) hitPosition.X += 1; // Hit Right Face
 	if (normal.Y > 0) hitPosition.Y = GetReminder(hitPosition.Y); // Hit Bottom Face
-	// if (normal.Y < 0) hitPosition.Y += 1; // Hit Top Face
 	if (normal.Z > 0) hitPosition.Z = GetReminder(hitPosition.Z); // Hit Back Face
-	// if (normal.Z < 0) hitPosition.Z += 1; // Hit Front Faces
+	
 	Octree c = octree.FindNeighboursAtSameLevel(hitPosition, 1);
 	Octree found = c.FindLeafAtPosition_2(voxelPos, normal);
 	if(found != null && found.size < 0.0625)
@@ -354,7 +265,7 @@ public void BreakBlock(Vector3 rayCastPosition, Vector3 rayCastNormal)
 
 		octree.RemoveBlock(newPosition);
 	}
-	// Task.Run(() => RefreshChunk());
+
 	RefreshChunk();
 }
 public void PlaceBlock(Vector3 position, Vector3 normal, VoxelTexture voxelTexture, int xScale, int yScale, int zScale)
@@ -439,7 +350,6 @@ public void PlaceBlock(Vector3 position, Vector3 normal, VoxelTexture voxelTextu
 		{
 			for(int z = startZ; z < endZ; z++)
 			{
-				GD.Print($"placing new block");
 				temp.X = x + newPosition.X;
 				temp.Y =  y +newPosition.Y;
 				temp.Z = z + newPosition.Z;
@@ -463,105 +373,6 @@ public void PlaceBlock(Vector3 position, Vector3 normal, VoxelTexture voxelTextu
 	}
 	Task.Run(() => RefreshChunk());
 }
-
-private int previousLOD = -1; // Store last LOD value to avoid unnecessary updates
-private float lodStabilityTimer = 0.0f; // Timer to prevent rapid switching
-private const float lodChangeDelay = 0.3f; // Minimum delay before switching LOD
-
-// public void UpdateChunkLOD(float delta)
-// {
-// 	lodStabilityTimer += delta; // Increment stability timer
-
-// 	int newLOD = LOD; // Keep track of the new calculated LOD
-
-// 	// float distance = editorCamera.GlobalPosition.DistanceTo(chunkPosition);
-// 	float distance = editorCamera.GlobalPosition.Z - this.chunkPosition.Z;
-
-// 	if (distance < 10)
-// 	{
-// 		newLOD = 1;
-// 		// GD.Print("DISTANCE: ", distance);
-// 	}
-// 	else if (distance < 20)
-// 	{
-// 		newLOD = 4;
-// 		// GD.Print("DISTANCE: ", distance);
-// 	}
-// 	else if (distance < 30)
-// 	{
-// 		newLOD = 8;
-// 		// GD.Print("DISTANCE: ", distance);
-// 	}
-// 	else if (distance < 40)
-// 	{
-// 		newLOD = 16;
-// 	}
-// 	else if (distance < 500)
-// 	{
-// 		newLOD = 32;
-// 	}
-// 	else if (distance < 600)
-// 	{
-// 		newLOD = 64;
-// 	}
-
-// 	// ✅ Only update LOD if it actually changed and stays stable
-// 	if (newLOD != previousLOD)
-// 	{
-// 		if (lodStabilityTimer >= lodChangeDelay)
-// 		{
-// 			previousLOD = newLOD; // Update previous LOD
-// 			LOD = newLOD; // Apply new LOD
-// 			flag = true; // Mark chunk for update
-// 			lodStabilityTimer = 0; // Reset timer
-// 		}
-// 	}
-
-// 	// ✅ If LOD change is confirmed, initialize the new chunk
-// 	if (flag)
-// 	{
-// 		GD.Print("DISTANCE: ", distance, "CHunk position: ", chunkPosition);
-// 			_ = InitializeChunkAsync();
-// 		flag = false;
-// 	}
-// }
-	
-	// public async Task InitializeChunkAsync()
-	// {
-	// 	if (octree != null)
-	// 	{
-	// 		octree.FreeOctree(); // Fully free the entire octree
-	// 		octree = null;
-	// 	}
-	// 	GD.Print($"Generating new chunk at {chunkPosition} with LOD {LOD}...");
-	// 	octree = await Task.Run(() => GenerateOctree());
-	// 	if (chunkMesh.Mesh != null)
-	// 	{
-	// 		chunkMesh.CallDeferred("queue_free");
-	// 		chunkMesh = new MeshInstance3D();
-	// 	}
-
-	// 	if (collisionShape.Shape != null)
-	// 	{
-	// 		collisionShape.CallDeferred("queue_free");
-	// 		collisionShape = new CollisionShape3D();
-	// 	}
-	// 	// octree = new Octree();
-	// 	// octree.position = chunkPosition;
-	// 	// octree.desiredLODLevel = chunkSize;
-	// 	// octree.size = chunkSize;
-	// 	// // GenerateHeightMap(chunkSize, 0.12f,12);
-	// 	// octree.Divide(playerPosition, heightMap, Global.maxHeight, LOD);
-	// 	// // octree.PopulateOctreeWith2DNoise(heightMap,chunkSize,10);
-	// 	// UpdateChunk(octree);
-	// 	// AddChild(chunkMesh);
-	// 	GD.Print($"Generating new mesh at {chunkPosition} with LOD {LOD}...");
-
-	// 	// await Task.Run(() => UpdateChunk(octree));
-	// 	UpdateChunk(octree);
-	// }
-	//    // Start octree generation in a separate thread
-
 
 
 // Generate the octree in a background thread

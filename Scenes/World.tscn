@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://c34telbcfcc1k"]
+[gd_scene load_steps=15 format=3 uid="uid://c34telbcfcc1k"]
 
 [ext_resource type="Script" path="res://Scripts/World.cs" id="1_0qrtr"]
 [ext_resource type="PackedScene" uid="uid://ctb810m0qi0au" path="res://Scenes/chunk.tscn" id="1_1b6vc"]
@@ -9,7 +9,6 @@
 [ext_resource type="Texture2D" uid="uid://b52vxg5uu0q21" path="res://resources/new_textures/grass.png" id="7_xf7wh"]
 [ext_resource type="Texture2D" uid="uid://cs48vj6awjm5u" path="res://resources/new_textures/redBricks.png" id="8_vfjkk"]
 [ext_resource type="Texture2D" uid="uid://bu6yjgw5wwb8u" path="res://resources/new_textures/top_wood_building.png" id="9_dix35"]
-[ext_resource type="AudioStream" uid="uid://l3m5jbjvsicj" path="res://Audio/star-travelers-adi-goldstein-main-version-02-16-12784.wav" id="10_q1tx5"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_k1jxo"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -61,7 +60,7 @@ shadow_reverse_cull_face = true
 shadow_transmittance_bias = 6.838
 
 [node name="Player" parent="." instance=ExtResource("3_qi0ww")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.3769, 26.8312, 19.1872)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42.5279, 20.7758, 40.3355)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 414.903, 5, 219.431)
@@ -191,7 +190,6 @@ text = "Set
 "
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
-stream = ExtResource("10_q1tx5")
 autoplay = true
 
 [connection signal="drag_ended" from="CanvasLayer/VBoxContainer/HBoxContainer/X" to="Player" method="_on_x_drag_ended"]
